@@ -1,0 +1,39 @@
+.home {
+  background-color: var(--color-light-grayish-cyan);
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: 144px 1fr;
+
+  .logoContainer {
+    display: flex;
+    place-self: center;
+
+    .logo {
+    }
+  }
+
+  .calculatorContainer {
+    background-color: var(--color-white);
+    height: 100%;
+    display: grid;
+    grid-template-rows: repeat(4, auto);
+    border-top-left-radius: 1.5rem;
+    border-top-right-radius: 1.5rem;
+    padding: 2rem;
+
+    .billContainer {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .selectTipContainer {
+    }
+
+    .numberOfPeopleContainer {
+    }
+
+    .resultContainer {
+    }
+  }
+}

@@ -1,0 +1,35 @@
+.numberInput {
+  display: grid;
+  background-color: var(--color-very-light-grayish-cyan);
+  grid-template-columns: 3.2rem minmax(0, min-content);
+  align-items: center;
+  border-radius: 0.5rem;
+
+  .iconContainer {
+    place-self: center;
+  }
+
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
+
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+
+  .input {
+    font-size: 24px;
+    outline: none;
+    background-color: inherit;
+    height: 3rem;
+    border: none;
+    text-align: right;
+    padding-right: 1rem;
+    color: var(--color-very-dark-cyan);
+    cursor: text;
+    &::placeholder {
+      color: var(--color-grayish-cyan);
+    }
+  }
+}
