@@ -1,19 +1,23 @@
 import iconDollar from '@/assets/images/icon-dollar.svg'
 import NumberInput from '@/components/NumberInput'
+import { InputHTMLAttributes } from 'react'
 
-interface Props {
-  id: string
-  onChange: (value: number) => void
+interface Props
+  extends Omit<
+    InputHTMLAttributes<HTMLInputElement>,
+    'className' | 'type' | 'placeholder'
+  > {
+  hasError?: boolean
 }
 
-export default function MoneyInput({ id, onChange }: Props) {
+export default function MoneyInput({ hasError, ...attrs }: Props) {
   return (
     <NumberInput
-      id={id}
+      {...attrs}
       icon={iconDollar}
-      onChange={onChange}
       numberType="float"
       placeholder="0"
+      hasError={hasError}
     />
   )
 }

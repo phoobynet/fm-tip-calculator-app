@@ -4,6 +4,17 @@
   grid-template-columns: 3.2rem minmax(0, min-content);
   align-items: center;
   border-radius: 0.5rem;
+  cursor: pointer;
+  border: 2px solid var(--color-very-light-grayish-cyan);
+  overflow: hidden;
+
+  &:hover {
+    border: 2px solid var(--color-strong-cyan);
+  }
+
+  &[data-error='true'] {
+    border: 2px solid var(--color-error);
+  }
 
   .iconContainer {
     place-self: center;
@@ -27,7 +38,8 @@
     text-align: right;
     padding-right: 1rem;
     color: var(--color-very-dark-cyan);
-    cursor: text;
+    cursor: pointer;
+
     &::placeholder {
       color: var(--color-grayish-cyan);
     }

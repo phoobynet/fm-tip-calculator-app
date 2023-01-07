@@ -1,14 +1,27 @@
-import iconDollar from '@/assets/images/icon-dollar.svg'
-import iconPerson from '@/assets/images/icon-person.svg'
 import logo from '@/assets/images/logo.svg'
 import Label from '@/components/Label'
 import MoneyInput from '@/components/MoneyInput'
 import NumberInput from '@/components/NumberInput'
 import styles from '@/styles/Home.module.scss'
+import { useFormik } from 'formik'
 import Head from 'next/head'
 import Image from 'next/image'
 
+interface FormValues {
+  bill?: number
+  tip?: number
+  numberOfPeople?: number
+}
+
+const tipOptions = [5, 10, 15, 25, 50]
+
 export default function Home() {
+  const formik = useFormik<FormValues>({
+    initialValues: {},
+    onSubmit(values) {
+      console.log(values)
+    },
+  })
   return (
     <>
       <Head>
@@ -35,21 +48,44 @@ export default function Home() {
             alt=""
           />
         </div>
-        <div className={styles.calculatorContainer}>
+        <form
+          className={styles.calculatorContainer}
+          onSubmit={formik.handleSubmit}
+        >
           <div className={styles.billContainer}>
             <Label htmlFor="bill">Bill</Label>
             <MoneyInput
               id="bill"
-              onChange={(b) => console.log(b)}
+              onChange={formik.handleChange}
+              value={formik.values.bill}
+              hasError={!!formik.errors.bill}
             />
           </div>
 
-          <div className={styles.selectTipContainer}></div>
+          <div className={styles.selectTipContainer}>
+            <Label htmlFor="tip">Select Tip %</Label>
+            <div className={styles.selectTip}>
+              {tipOptions.map((tip, i) => (
+                <>
+                  <label style={{ appearance: 'button' }}>
+                    <input
+                      type="radio"
+                      name="tip"
+                      value={tip}
+                      checked={formik.values.tip === tip}
+                    />
+                    {`${tip}%`}
+                  </label>
+                </>
+              ))}
+              <input type="number" />
+            </div>
+          </div>
 
           <div className={styles.numberOfPeopleContainer}></div>
 
           <div className={styles.resultContainer}></div>
-        </div>
+        </form>
       </main>
     </>
   )

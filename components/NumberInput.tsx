@@ -1,39 +1,66 @@
 import styles from './NumberInput.module.scss'
 import Image, { StaticImageData } from 'next/image'
-import React, { ChangeEventHandler, InputHTMLAttributes } from 'react'
+import React, { InputHTMLAttributes, KeyboardEventHandler, useRef } from 'react'
 
 interface Props
-  extends Omit<
-    InputHTMLAttributes<HTMLInputElement>,
-    'className' | 'type' | 'onChange'
-  > {
+  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'className' | 'type'> {
   icon: StaticImageData
   numberType: 'float' | 'integer'
-  onChange: (value: number) => void
+  hasError?: boolean
 }
+
+const integerAllowedKeys = [
+  'Backspace',
+  'Enter',
+  'Delete',
+  'Tab',
+  'ArrowLeft',
+  'ArrowRight',
+  'ArrowUp',
+  'ArrowDown',
+  '0',
+  '1',
+  '2',
+  '3',
+  '4',
+  '5',
+  '6',
+  '7',
+  '8',
+  '9',
+]
+
+const floatAllowedKeys = [...integerAllowedKeys, '.']
 
 export default function NumberInput({
   icon,
-  onChange,
   numberType,
+  hasError,
   ...inputAttrs
 }: Props) {
-  const onChangeHandler: ChangeEventHandler<HTMLInputElement> = (e) => {
-    let v: number
-    if (numberType === 'float') {
-      v = Number.parseFloat(e.target.value)
-    } else {
-      v = Number.parseInt(e.target.value)
-    }
+  const inputRef = useRef<HTMLInputElement>(null)
 
-    if (isNaN(v)) {
+  const onKeyDownHandler: KeyboardEventHandler = (e) => {
+    if (
+      (numberType === 'float' ? floatAllowedKeys : integerAllowedKeys).includes(
+        e.key,
+      )
+    ) {
       return
     }
-
-    onChange(v)
+    e.preventDefault()
   }
+
+  const selectAll = () => {
+    inputRef?.current?.select()
+  }
+
   return (
-    <div className={styles.numberInput}>
+    <div
+      className={styles.numberInput}
+      onClick={selectAll}
+      data-error={hasError}
+    >
       <div className={styles.iconContainer}>
         <Image
           src={icon}
@@ -41,10 +68,11 @@ export default function NumberInput({
         />
       </div>
       <input
+        ref={inputRef}
         {...inputAttrs}
-        onChange={onChangeHandler}
         type="number"
         className={styles.input}
+        onKeyDown={onKeyDownHandler}
       />
     </div>
   )
