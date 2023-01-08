@@ -1,9 +1,16 @@
-@mixin inputStyles {
+.numberInputWithIcon {
+  display: grid;
+  grid-template-columns: 3.2rem minmax(0, min-content);
+  align-items: center;
   background-color: var(--color-very-light-grayish-cyan);
   border-radius: 0.5rem;
   cursor: pointer;
   border: 2px solid var(--color-very-light-grayish-cyan);
   overflow: hidden;
+
+  .iconContainer {
+    place-self: center;
+  }
 
   &:hover {
     border: 2px solid var(--color-strong-cyan);
@@ -37,23 +44,5 @@
     &::placeholder {
       color: var(--color-grayish-cyan);
     }
-  }
-}
-
-.numberInput {
-  @include inputStyles;
-
-  .input {
-  }
-}
-
-.numberInputWithIcon {
-  @include inputStyles;
-  display: grid;
-  grid-template-columns: 3.2rem minmax(0, min-content);
-  align-items: center;
-
-  .iconContainer {
-    place-self: center;
   }
 }

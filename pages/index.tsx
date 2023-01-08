@@ -13,13 +13,22 @@ interface FormValues {
   numberOfPeople?: number
 }
 
-const tipOptions = [5, 10, 15, 25, 50]
+const formTipOptions = [5, 10, 15, 25, 50]
 
 export default function Home() {
   const formik = useFormik<FormValues>({
     initialValues: {},
     onSubmit(values) {
       console.log(values)
+    },
+    validate(values) {
+      const errors: Record<string, string> = {}
+
+      // TODO: Validate
+
+      console.log(values)
+
+      return errors
     },
   })
   return (
@@ -65,20 +74,37 @@ export default function Home() {
           <div className={styles.selectTipContainer}>
             <Label htmlFor="tip">Select Tip %</Label>
             <div className={styles.selectTip}>
-              {tipOptions.map((tip, i) => (
+              {formTipOptions.map((tip, i) => (
                 <>
-                  <label style={{ appearance: 'button' }}>
+                  <label
+                    // style={{ appearance: 'button' }}
+                    className={formik.values.tip === tip ? styles.selected : ''}
+                  >
                     <input
                       type="radio"
                       name="tip"
-                      value={tip}
+                      value={tip.toString()}
                       checked={formik.values.tip === tip}
+                      onChange={(e) =>
+                        formik.setFieldValue(
+                          'tip',
+                          parseInt(e.target.value, 10),
+                        )
+                      }
                     />
                     {`${tip}%`}
                   </label>
                 </>
               ))}
-              <input type="number" />
+              <NumberInput
+                id="tip"
+                numberType={'integer'}
+                onChange={formik.handleChange}
+                value={formik.values.tip}
+                placeholder="Custom"
+                max={100}
+                maxLength={3}
+              />
             </div>
           </div>
 

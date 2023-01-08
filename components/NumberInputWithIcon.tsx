@@ -1,4 +1,5 @@
-import styles from './NumberInputWithIcon.module.scss'
+import styles from './NumberInput.module.scss'
+import Image, { StaticImageData } from 'next/image'
 import React, {
   InputHTMLAttributes,
   KeyboardEvent,
@@ -13,6 +14,7 @@ interface Props
     'className' | 'type' | 'id'
   > {
   id: string
+  icon: StaticImageData
   numberType: 'float' | 'integer'
   hasError?: boolean
 }
@@ -43,8 +45,9 @@ const floatAllowedKeys = [...integerAllowedKeys, '.']
 const isKeyPermitted = (allowedKeys: Array<string>, key: string): boolean =>
   allowedKeys.includes(key)
 
-export default function NumberInput({
+export default function NumberInputWithIcon({
   id,
+  icon,
   numberType,
   hasError,
   ...inputAttrs
@@ -55,8 +58,14 @@ export default function NumberInput({
     [numberType],
   )
 
+  const isLessThanOrEqualToMax = (key: string): boolean => {
+    console.log('isLessThanOrEqualToMax: ' + key)
+    return true
+  }
+
   const allowKeyDown = (keyboardEvent: KeyboardEvent): boolean =>
-    isKeyPermitted(allowedKeys, keyboardEvent.key)
+    isKeyPermitted(allowedKeys, keyboardEvent.key) &&
+    isLessThanOrEqualToMax(keyboardEvent.key)
 
   const onKeyDownHandler: KeyboardEventHandler = (e) => {
     if (allowKeyDown(e)) {
@@ -72,17 +81,24 @@ export default function NumberInput({
 
   return (
     <div
-      className={styles.numberInput}
+      className={styles.numberInputWithIcon}
       onClick={selectAll}
       data-error={hasError}
     >
+      <div className={styles.iconContainer}>
+        <Image
+          src={icon}
+          alt=""
+        />
+      </div>
       <input
+        ref={inputRef}
         id={id}
         {...inputAttrs}
         type="number"
         className={styles.input}
         onKeyDown={onKeyDownHandler}
-      ></input>
+      />
     </div>
   )
 }
